@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript">
+<body>
+socket = new SockJS('/ws')
+StompClient = Stomp.over(socket)
+StompClient.connect({}, function (frame) {
+console.log(frame)
+StompClient.subscribe('/all/messages', function (result) {
+console.log(result.body)
+show(JSON.parse(result.body))
+});
+});
+
+socket = new SockJS('/ws')
+privateStompClient = Stomp.over(socket)
+privateStompClient.connect({}, function (frame) {
+console.log(frame)
+privateStompClient.subscribe('/user/specific', function (result) {
+console.log(result.body)
+show(JSON.parse(result.body))
+});
+
+});
+</script >
+</head>
+<body>
+<div>
+    <div>
+        <button id="sendMessage" onclick="sendMessage()">Send</button>
+        <input type="text" id="text" placeholder="Text"/>
+    </div>
+    <br>
+    <div>
+        <button id="sendPrivateMessage" onclick="sendPrivateMessage()">Send</button>
+        <input type="text" id="text2" placeholder="Text"/>
+    </div>
+</div>
+</body>
+</html>
